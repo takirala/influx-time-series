@@ -74,8 +74,6 @@ Import data into the InfluxDB
 
 	USE NOAA_water_database
 
-	precision rfc3339  (to print time stamp in human readable format)
-
 --
 
 Using Meta Queries
