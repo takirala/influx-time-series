@@ -1,7 +1,5 @@
 ## Influx QL
 
-
-
 #### Set up data and database
 
 Open webinterface at
@@ -17,6 +15,11 @@ Download dummy data
 Write dummy data to the database.
 
 	influx -import -path=NOAA_data.txt -precision=s
+
+
+#### Database management
+
+	CREATE RETENTION POLICY what_is_time ON NOAA_water_database DURATION 1d REPLICATION 1
 
 
 #### Test Queries
@@ -119,3 +122,20 @@ Select the above
  	SELECT DERIVATIVE(MAX(water_level)) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(12m)
 
  	SELECT STDDEV(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' and time < '2015-09-18T12:06:00Z' GROUP BY time(1w), location
+
+
+##### CQ
+
+	CREATE CONTINUOUS QUERY "min_max" ON "NOAA_water_database" 
+		RESAMPLE EVERY 15m FOR 60m
+			BEGIN 
+				SELECT min("water_level"),max("water_level") INTO what_is_time."min_max_data" FROM autogen."h2o_feet" GROUP BY time(30m) 
+			END
+
+##### DROP 
+
+	DROP series where 
+
+	DROP MEASUREMENT h2o_feet
+
+	DROP RETENTION POLICY one_day_only ON NOAA_water_database
