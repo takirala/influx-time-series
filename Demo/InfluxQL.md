@@ -1,3 +1,103 @@
+## Hello Influx!
+
+InfluxDB is easy to install and has no external dependencies,
+
+	brew install influxdb
+	
+Firstly, let us go through some of the queries that InfluxQL, the query language for InfluxDB supports!
+
+	Line Protocol
+	Measurement, tag_set                 field_set	  timestamp
+	Stock_price, ticket=A,market=NASDAQ  price=177.03 144529920000
+
+Writing Data into influxDB using the CLI (one of the options to write to the database)
+	
+	Creating a database
+
+	CREATE DATABASE mydb
+
+*It returns nothing if database creation is successful.
+
+Verify that it is created –
+
+	SHOW databases
+
+InfluxDB also writes statistical and diagnostic information to database named_internal, which records metrics on the internal runtime and service performance. The **\_internal** database can be queried and manipulated like any other InfluxDB database.
+
+Using the database we just created –
+
+	use mydb
+
+-
+
+Inserting data into the database
+
+	INSERT cpu,host=serverA,region=us_west value=0.64
+	INSERT payment,device=mobile,product=Notepad,method=credit billed=33,licenses=3i 1434067467100293230
+	INSERT stock,symbol=AAPL bid=127.46,ask=127.48
+	INSERT temperature,machine=unit42,type=assembly external=25,internal=37 1434067467000000000
+
+*Notice that CLI doesn’t return anything if data is inserted successfully.
+
+To see that the data is inserted successfully,
+
+	Select * from cpu
+
+To know more information about schema shape, you may run
+	
+	Show measurements, show tag keys, show field keys
+
+-
+
+Writing Data into influxDB using the HTTP API (Second option to write to the database)
+
+
+Create database
+
+	curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb1"
+
+Write the data
+
+	curl -i -XPOST 'http://localhost:8086/write?db=mydb1' --data-binary 'cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000'
+
+Querying the data
+
+	curl -GET 'http://localhost:8086/query?pretty=true' --data-urlencode "db=mydb1" --data-urlencode "q=SELECT \"value\" FROM \"cpu_load_short\" WHERE \"region\"='us-west'"
+
+Import data into the InfluxDB
+	
+	curl https://s3-us-west-2.amazonaws.com/influx-sample-data/NOAA.txt > NOAA_data.txt
+
+	influx –import –path=NOAA_data.txt
+
+	influx
+
+	USE NOAA_water_database
+
+	precision rfc3339  (to print time stamp in human readable format)
+
+--
+
+Using Meta Queries
+
+	Show Series
+
+Basic Queries
+
+	Select * from average_temperature where location='santa_monica' LIMIT 10
+
+Select statement with Relative Time –
+
+	Select * from h2o_pH where time > now() - 400d LIMIT 5
+
+Select statement with Absolute Time –
+
+	Select * from h2o_pH where time > '2015-08-18 23:00:01.232000000' LIMIT 2
+
+Similarly, you have group by  clause.
+You can also run queries with multiple functions in the same query!
+
+
 ## Influx QL
 
 #### Set up data and database
