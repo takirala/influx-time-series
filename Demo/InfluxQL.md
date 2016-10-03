@@ -239,3 +239,52 @@ Select the above
 	DROP MEASUREMENT h2o_feet
 
 	DROP RETENTION POLICY one_day_only ON NOAA_water_database
+	
+	
+#### RD
+
+
+#### ARS
+
+### Backup & Restore
+
+Backup Shard:
+	
+	influxd backup -database telegraf -retention default -shard 34 /tmp/backup/
+
+Restore Shard:
+
+	influxd restore -database telegraf -retention default -shard 34 -datadir /usr/local/var/influxdb/data /tmp/backup
+
+Restart InfluxDB
+
+	brew services stop influxdb
+	brew services start influxdb
+
+InfluxDB Config dir - /usr/local/etc
+InfluxDBData dir - /usr/local/var/influxdb/data/mydb
+
+### Telegraf
+
+	telegraf -config telegraf.conf
+
+Verify data is going in telegraf DB:
+	
+	show databases
+	use telegraf
+	show measurements
+	select * from cpu where time > now() - 1m
+
+### Chronograf
+
+	chronograf
+
+Open localhost:10000
+
+Sample visualization queries:
+	
+	SELECT mean(usage_user) FROM cpu WHERE time > now() - 10m GROUP BY time(1m), cpu
+
+	SELECT count(usage_user) FROM cpu WHERE time > now() - 10m GROUP BY time(1m), cpu
+
+	SELECT mean(usage_idle) FROM cpu WHERE time > now() - 10m GROUP BY time(1m), cpu
