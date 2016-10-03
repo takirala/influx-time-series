@@ -142,6 +142,9 @@ Select the first five observations in the measurement h2o_feet:
 
 Insert new data in to influx DB
 
+
+	INSERT <databaseName>.<retentionPolicy>.<measurementName> <some data>
+
 	INSERT h2o_feet,location=gainesville water_level=20,level\ description="alberta measured it to be 200mm"
 
 
