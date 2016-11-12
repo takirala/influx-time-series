@@ -10,13 +10,13 @@ A hands on tutorial to get started with influx DB
     echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
     sudo apt-get update && sudo apt-get install influxdb
   
-  ##### Start influx Server. 
+##### Start influx Server. 
     
     sudo service influxdb start
     
   Visit influx GUI at http://localhost:8083/  
   
-  ##### Start influx client
+##### Start influx client
   
     influx
     
