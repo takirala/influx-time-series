@@ -57,3 +57,13 @@ Refer http://docs.grafana.org/installation/debian/
 ##### Add a dashboard for influxdb cpu metrics
 
 Refer http://docs.grafana.org/datasources/influxdb/
+
+
+### Install GO
+
+https://github.com/golang/go/wiki/Ubuntu
+
+
+### Compile INFLUX DB
+
+https://anomaly.io/compile-influxdb/
