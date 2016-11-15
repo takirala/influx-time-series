@@ -67,3 +67,8 @@ https://github.com/golang/go/wiki/Ubuntu
 ### Compile INFLUX DB
 
 https://anomaly.io/compile-influxdb/
+
+
+### Resources
+
+https://www.influxdata.com/building-custom-interfaces-for-influxdb/
