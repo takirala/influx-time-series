@@ -1,3 +1,5 @@
+var _influxdb = 'http://localhost:8086/query';
+
 function convertToEST(clientDate){
     //EST
     offset = -5.0
@@ -9,12 +11,12 @@ function convertToEST(clientDate){
 
 function transformData(influxData) {
     var palette = new Rickshaw.Color.Palette();
-    console.log(influxData.results[0])
+    //console.log(influxData.results[0])
     return influxData.results[0].series.map(function(s) {
         return {
             name: JSON.stringify(s.tags),
             data: s.values.map(function(v) {
-                console.log(v[0]);
+                //console.log(v[0]);
                 return { x: convertToEST(new Date(v[0])).getTime() / 1000, y: v[1] };
             }),
             color: palette.color()
@@ -22,15 +24,17 @@ function transformData(influxData) {
     });
 }
 
-function drawGraph($element, series, renderer) {
+function drawGraph($element, series, renderer, testQuery) {
     //$element.find('.y_axis').css('background-color: red;')
+    console.log(series);
 
+    var _seriesData = series;
     var graph = new Rickshaw.Graph({
         element: $element.find('.chart').get(0),
         width: 1000,
         height: 300,
         renderer: renderer,
-        series: series
+        series: _seriesData
     });
 
     graph.render();

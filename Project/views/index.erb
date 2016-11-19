@@ -16,18 +16,18 @@
 
 <script type="text/javascript">
 $(function() {
-    var influxdb = 'http://localhost:8086/query';
-    var testQuery = "SELECT mean(usage_user) FROM cpu WHERE time < now() GROUP BY time(1m), cpu";
+    var testQuery = "SELECT mean(usage_user) FROM cpu WHERE time > now() - 1h GROUP BY time(30s), cpu";
 
-    $.getJSON(influxdb, {
+    $.getJSON(_influxdb, {
                 db: 'telegraf',
                 q: testQuery
             },
-            function( influxData ) {
+            function(influxData) {
                 drawGraph(
                         $('#test_chart'),
                         transformData(influxData),
-                        'line'
+                        'line',
+                        testQuery
                 );
             }
     );
@@ -35,6 +35,3 @@ $(function() {
 }); //end
 
 </script>
-
-
-
