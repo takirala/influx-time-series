@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
     <div class="btn-group gap" role="group">
-      <button id="mem_free" class="btn btn-default" onclick="mem_click('available')">Available</button>
+      <button id="mem_free" class="btn btn-default active" onclick="mem_click('available')">Available</button>
       <button id="mem_used" class="btn btn-default" onclick="mem_click('used')">Used</button>
     </div>
     <h2>RAM Usage</h2>
@@ -18,12 +18,19 @@
 
 <script type="text/javascript">
 
+$('body').on('click', '.btn-group button', function (e) {
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
+});
+
 $(document).ready(function() {
     $("#mem_free").click();
 });
 
 function mem_click(parameter) {
-  var testQuery = "SELECT mean("+parameter+") / 1000000000 from mem where time > now() - 1h GROUP BY time(30s);";
+  var testQuery = "SELECT mean("+parameter+") / 1000000000 from mem where time > now() - 1h GROUP BY time(30s); SELECT mean(used) / 1000000000 from mem where time > now() - 1h GROUP BY time(30s);";
+
+  console.log(testQuery)
 
   $(".chart").empty();
   $(".y_axis").empty();

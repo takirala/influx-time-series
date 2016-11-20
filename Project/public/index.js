@@ -9,11 +9,43 @@ function convertToEST(clientDate){
     return serverDate
 }
 
-function transformData(influxData, tagName='N') {
+function transformProcData(influxData) {
     var palette = new Rickshaw.Color.Palette();
     //console.log(influxData.results[0])
-    return influxData.results[0].series.map(function(s) {
-        console.log(s);
+    console.log(influxData)
+    var taru = influxData.results[0].series.map(function(s) {  
+        
+        var columns = s.columns;
+        var values = s.values;
+        
+        var res = [];
+
+        for (var i= 0; i < values.length; i++) {
+            var item = values[i];
+
+            for(var j = 1; j < columns.length; j++) {
+                //console.debug( " x : " +  item[0] + " y : " + item[j]);
+                var elem = {
+                    name: columns[j],
+                    data: {
+                        x : convertToEST(new Date(item[0])).getTime() / 1000, 
+                        y : item[j]
+                    }
+                    //color: palette.color()
+                }
+                res.push(elem);
+            }
+        }
+        return res;
+    });
+    console.log(taru);
+    return taru;
+}
+
+function transformData(influxData, tagName) {
+    var palette = new Rickshaw.Color.Palette();
+    console.log(influxData)
+    var taru = influxData.results[0].series.map(function(s) {
         return {
             name: JSON.stringify(s.tags || tagName),
             data: s.values.map(function(v) {
@@ -23,6 +55,7 @@ function transformData(influxData, tagName='N') {
             color: palette.color()
         };
     });
+    return taru;
 }
 
 function drawGraph($element, series, renderer, testQuery) {
