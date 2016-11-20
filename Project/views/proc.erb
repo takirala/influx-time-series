@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-md-12">
+  	<div class="btn-group gap" role="group">
+      <button id="proc_threads" class="btn btn-default active" onclick="proc_click('total_threads', 'Threads')">Total Threads</button>
+      <button id="proc_block" class="btn btn-default" onclick="proc_click('blocked', 'Blocked')">Blocked</button>
+      <button id="proc_run" class="btn btn-default" onclick="proc_click('running', 'Running')">Running</button>
+      <button id="proc_sleep" class="btn btn-default" onclick="proc_click('sleeping', 'Sleeping')">Sleeping</button>
+    </div>
+    <h2>Processes</h2>
+    <div id="proc_chart" style="white-space: nowrap;">
+      <div class="chart_container" >
+          <div class="y_axis"></div>
+          <div class="chart"></div>
+          <div class="slider"></div>
+      </div>
+      <div class="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+$('body').on('click', '.btn-group button', function (e) {
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
+});
+
+$(document).ready(proc_click('total_threads', 'Threads'));
+
+function proc_click(parameter, tagName) {
+	var diskQuery = "select MEAN("+parameter+") AS "+tagName+" from processes where time > now() - 1h GROUP BY time(30s);";
+
+	console.debug(diskQuery)
+
+	$(".chart").empty();
+	$(".y_axis").empty();
+	$(".legend").empty();
+	$(".slider").empty();
+
+	$.getJSON(_influxdb, {
+	            db: 'telegraf',
+	            q: diskQuery
+	        },
+	        function(influxData) {
+	            drawGraph(
+	                    $('#proc_chart'),
+	                    transformData(influxData, tagName),
+	                    'stack',
+	                    diskQuery
+	            );
+        }
+    );
+};
+</script>
