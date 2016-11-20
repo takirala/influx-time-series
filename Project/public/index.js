@@ -45,7 +45,7 @@ function transformProcData(influxData) {
 function transformData(influxData, tagName) {
     var palette = new Rickshaw.Color.Palette();
     console.debug(influxData)
-    return influxData.results[0].series.map(function(s) {
+    var res = influxData.results[0].series.map(function(s) {
         return {
             name: JSON.stringify(s.tags || tagName),
             data: s.values.map(function(v) {
@@ -55,19 +55,23 @@ function transformData(influxData, tagName) {
             color: palette.color()
         };
     });
+    return res;
 }
 
-function drawGraph($element, series, renderer, testQuery) {
-    //$element.find('.y_axis').css('background-color: red;')
-    console.debug(series);
 
-    var _seriesData = series;
+var prevData = null;
+var graphObject = null;
+var prevIntervalId = null;
+
+function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
+    //$element.find('.y_axis').css('background-color: red;')
+
     var graph = new Rickshaw.Graph({
         element: $element.find('.chart').get(0),
         width: 1000,
         height: 300,
         renderer: renderer,
-        series: _seriesData
+        series: seriesData
     });
 
     graph.render();
@@ -110,6 +114,40 @@ function drawGraph($element, series, renderer, testQuery) {
        graph: graph,
        element: $element.find('.slider').get(0)
     });
-    slider.render()
+
+
+    // For update the graph in real time.
+    prevData = seriesData
+    graphObject = graph
+    if(prevIntervalId != null) clearInterval(prevIntervalId);
+    prevIntervalId = setInterval( function() { updateData(updateQuery); }, 10000 );
+
+    return graph;
 
 } //drawGraph
+
+
+function updateData(testQuery) {
+    if(testQuery == null) return;
+    
+    console.debug(testQuery)
+    console.debug("Yayy" + prevData[0]['data'].length)
+  
+    $.getJSON(_influxdb, {
+            db: 'telegraf',
+            q: testQuery
+        },
+        function(influxData) {
+            var newData = transformData(influxData);
+            var newValues = newData[0]['data'];
+            for(var i = 0; i < newValues.length; i++) {
+                var elem = newValues[i];
+                if(elem != null && elem.x != null && elem.y != null) {
+                prevData[0]['data'].push(elem);
+                console.debug(prevData[0]['data'].length);
+            }
+        }
+        graphObject.update();
+  }
+  );
+}
