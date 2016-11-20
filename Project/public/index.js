@@ -129,23 +129,33 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
 
 function updateData(testQuery) {
     if(testQuery == null) return;
-    
-    console.debug(testQuery)
-    console.debug("Yayy" + prevData[0]['data'].length)
-  
+   
+    console.debug("Query : " + testQuery);
+
     $.getJSON(_influxdb, {
             db: 'telegraf',
             q: testQuery
         },
         function(influxData) {
             var newData = transformData(influxData);
-            var newValues = newData[0]['data'];
-            for(var i = 0; i < newValues.length; i++) {
-                var elem = newValues[i];
-                if(elem != null && elem.x != null && elem.y != null) {
-                prevData[0]['data'].push(elem);
-                console.debug(prevData[0]['data'].length);
+            var commonLen = newData.length;
+
+            if(prevData.length != commonLen) {
+                console.log("Failed to correlate")
+                return
             }
+
+            for(var j = 0; j < commonLen; j++) {
+
+                var newValues = newData[j]['data']
+
+                for(var i = 0; i < newValues.length; i++) {
+                    var elem = newValues[i];
+                    if(elem != null && elem.x != null && elem.y != null) {
+                    prevData[j]['data'].push(elem);
+                    console.debug(prevData[j]['data'].length);
+                }   
+            }   
         }
         graphObject.update();
   }

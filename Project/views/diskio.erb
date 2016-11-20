@@ -29,6 +29,7 @@ $(document).ready(function() {
 
 function disk_click(parameter) {
   var diskQuery = "SELECT DIFFERENCE("+parameter+") / 1000 AS KB from diskio where time > now() - 1h GROUP BY \"name\"";
+  var diskUpdateQuery = "SELECT DIFFERENCE("+parameter+") / 1000 AS KB from diskio where time > now() - 30s GROUP BY \"name\"";
 
   console.debug(diskQuery)
 
@@ -46,7 +47,9 @@ function disk_click(parameter) {
                         $('#diskio_chart'),
                         transformData(influxData),
                         'stack',
-                        diskQuery
+                        diskQuery,
+                        diskUpdateQuery
+
                 );
             }
     );
