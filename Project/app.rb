@@ -2,9 +2,13 @@
 require 'sinatra'
 
 get '/' do
-  erb :index
+	erb :index
 end
 
 get '/cpu_idle' do
-  erb :cpu_idle
+	erb :cpu_idle
+end
+
+get '/mem' do
+	erb :mem
 end

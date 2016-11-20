@@ -9,12 +9,13 @@ function convertToEST(clientDate){
     return serverDate
 }
 
-function transformData(influxData) {
+function transformData(influxData, tagName='N') {
     var palette = new Rickshaw.Color.Palette();
     //console.log(influxData.results[0])
     return influxData.results[0].series.map(function(s) {
+        console.log(s);
         return {
-            name: JSON.stringify(s.tags),
+            name: JSON.stringify(s.tags || tagName),
             data: s.values.map(function(v) {
                 //console.log(v[0]);
                 return { x: convertToEST(new Date(v[0])).getTime() / 1000, y: v[1] };
@@ -26,7 +27,7 @@ function transformData(influxData) {
 
 function drawGraph($element, series, renderer, testQuery) {
     //$element.find('.y_axis').css('background-color: red;')
-    console.log(series);
+    console.debug(series);
 
     var _seriesData = series;
     var graph = new Rickshaw.Graph({
