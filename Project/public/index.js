@@ -11,9 +11,9 @@ function convertToEST(clientDate){
 
 function transformProcData(influxData) {
     var palette = new Rickshaw.Color.Palette();
-    //console.log(influxData.results[0])
-    console.log(influxData)
-    var taru = influxData.results[0].series.map(function(s) {  
+    //console.debug(influxData.results[0])
+    console.debug(influxData)
+    var transform = influxData.results[0].series.map(function(s) {  
         
         var columns = s.columns;
         var values = s.values;
@@ -38,24 +38,23 @@ function transformProcData(influxData) {
         }
         return res;
     });
-    console.log(taru);
-    return taru;
+    console.debug(transform);
+    return transform;
 }
 
 function transformData(influxData, tagName) {
     var palette = new Rickshaw.Color.Palette();
-    console.log(influxData)
-    var taru = influxData.results[0].series.map(function(s) {
+    console.debug(influxData)
+    return influxData.results[0].series.map(function(s) {
         return {
             name: JSON.stringify(s.tags || tagName),
             data: s.values.map(function(v) {
-                //console.log(v[0]);
+                //console.debug(v[0]);
                 return { x: convertToEST(new Date(v[0])).getTime() / 1000, y: v[1] };
             }),
             color: palette.color()
         };
     });
-    return taru;
 }
 
 function drawGraph($element, series, renderer, testQuery) {
@@ -111,5 +110,6 @@ function drawGraph($element, series, renderer, testQuery) {
        graph: graph,
        element: $element.find('.slider').get(0)
     });
+    slider.render()
 
 } //drawGraph

@@ -30,7 +30,7 @@ $(document).ready(function() {
 function mem_click(parameter) {
   var testQuery = "SELECT mean("+parameter+") / 1000000000 from mem where time > now() - 1h GROUP BY time(30s); SELECT mean(used) / 1000000000 from mem where time > now() - 1h GROUP BY time(30s);";
 
-  console.log(testQuery)
+  console.debug(testQuery)
 
   $(".chart").empty();
   $(".y_axis").empty();
