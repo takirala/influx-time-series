@@ -1,0 +1,15 @@
+var period = 10s
+var every = 10s
+stream
+    // Select just the cpu measurement from our example database.
+    |from()
+        .measurement('cpu')
+    |window()
+       .period(period)
+       .every(every)
+    |alert()
+        .message('CPU usage alert')
+        .crit(lambda: "usage_idle" <  70)
+        // Whenever we get an alert write it to a file.
+        .log('/tmp/alerts.log')
+        //.email('<name>@ufl.edu')
