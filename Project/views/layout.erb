@@ -10,7 +10,10 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.css" media="screen" rel="stylesheet" type="text/css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
-
+    <script type="text/javascript">
+        //Set this parameter to empty string when running in windows or
+        var win_prefix = navigator.platform == null ? '' : navigator.platform.toString().includes('Win') ? 'win_' : '';
+    </script>
     <style>
         .chart_container {
             position: relative;

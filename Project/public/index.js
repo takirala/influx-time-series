@@ -73,6 +73,11 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
         renderer: renderer,
         series: seriesData
     });
+    console.log($element.find('.slider').get(0))
+    var slider = new Rickshaw.Graph.RangeSlider.Preview( {
+        graph: graph,
+        element: $element.find('.slider').get(0)
+    } );
 
     graph.render();
 
@@ -91,7 +96,7 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
 
     // x axis
     var time = new Rickshaw.Fixtures.Time();
-    var interval = time.unit('15 minute');
+    var interval = time.unit('30 minutes');
     var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: graph,
         timeUnit: interval
@@ -110,11 +115,7 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
         graph: graph
     });
 
-    var slider = new Rickshaw.Graph.RangeSlider( {
-       graph: graph,
-       element: $element.find('.slider').get(0)
-    });
-
+    
 
     // For update the graph in real time.
     prevData = seriesData

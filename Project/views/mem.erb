@@ -1,14 +1,18 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="btn-group gap" role="group">
-      <button id="mem_free" class="btn btn-default active" onclick="mem_click('available')">Available</button>
-      <button id="mem_used" class="btn btn-default" onclick="mem_click('used')">Used</button>
+    <div>
+      <div class="btn-group gap" role="group">
+        <button id="mem_free" class="btn btn-default active" onclick="mem_click('available')">Available</button>
+        <button id="mem_used" class="btn btn-default" onclick="mem_click('used')">Used</button>
+      </div>
+
     </div>
     <h2>RAM Usage</h2>
     <div id="mem_chart" style="white-space: nowrap;">
       <div class="chart_container" >
           <div class="y_axis"></div>
           <div class="chart"></div>
+          <h3>Range Slider</h3>
           <div class="slider"></div>
       </div>
       <div class="legend"></div>
@@ -28,19 +32,20 @@ $(document).ready(function() {
 });
 
 function mem_click(parameter) {
-  var testQuery = "SELECT mean("+parameter+") / 1000000000 from mem where time > now() - 1h GROUP BY time(30s);";
-  var updateQuery = "SELECT mean("+parameter+") / 1000000000 from mem where time > now() - 30s GROUP BY time(30s)";
-
+  var testQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - 8h GROUP BY time(30s);";
+  var updateQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - 30s GROUP BY time(30s)";
+  console.debug(testQuery);
   $(".chart").empty();
   $(".y_axis").empty();
   $(".legend").empty();
-  $(".slider").empty();
+  //$(".slider").empty();
 
     $.getJSON(_influxdb, {
                 db: 'telegraf',
                 q: testQuery
             },
             function(influxData) {
+              console.debug(influxData)
                 graphObject = drawGraph(
                         $('#mem_chart'),
                         transformData(influxData, "GB"),
