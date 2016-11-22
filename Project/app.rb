@@ -21,6 +21,14 @@ get '/proc' do
 	erb :proc
 end
 
+get '/net' do
+	erb :net
+end
+
+get '/netstat' do
+	erb :netstat
+end
+
 get '/holt' do
 	erb :holt
 end

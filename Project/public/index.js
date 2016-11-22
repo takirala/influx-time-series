@@ -73,7 +73,7 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
         renderer: renderer,
         series: seriesData
     });
-    console.log($element.find('.slider').get(0))
+
     var slider = new Rickshaw.Graph.RangeSlider.Preview( {
         graph: graph,
         element: $element.find('.slider').get(0)
