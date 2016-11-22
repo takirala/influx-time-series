@@ -30,7 +30,7 @@ function mem_click(parameter) {
   //        <!--Available_Bytes for windows and available for unix-->
   //        <!--Percent_Idle_Time for windows and read_bytes for unix-->
   
-  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 FROM win_mem where time > now() - 2h group by time(30s)";
+  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 FROM mem where time > now() - 2h group by time(30s)";
   else if (parameter === 'disk') testQuery = "SELECT holt_winters_with_fit(DIFFERENCE("+'read_bytes'+"),100,10) / 1000 AS KB from diskio where time > now() - 2h GROUP BY \"name\""
   
   console.debug(testQuery);
