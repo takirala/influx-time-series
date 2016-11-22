@@ -1,6 +1,6 @@
 # myapp.rb
 require 'sinatra'
-
+require 'json'
 get '/' do
 	erb :index
 end
@@ -19,4 +19,10 @@ end
 
 get '/proc' do
 	erb :proc
+end
+
+get '/alerts' do
+   @logFile = File.read("/tmp/alerts.log")
+      erb :alerts
+   #@logFile.close
 end

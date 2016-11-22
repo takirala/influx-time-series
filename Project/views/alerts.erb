@@ -1,0 +1,25 @@
+<div class = "row">
+ <h2>Alerts Log</h2>
+   <% i = 1 %>
+    <% @logFile.each_line do |line| %>
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+	<div class="card">
+    		<div class="card-header" role="tab" id="heading<%=i%>">
+      		<h5 class="mb-0">
+        	<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%=i%>" aria-expanded="false" aria-controls="collapse_<%=i%>">
+        	 <%= JSON.pretty_generate(JSON.parse(line)['message'])%>
+                </a>
+      		</h5>
+    		</div>
+    		<div id="collapse_<%=i%>" class="collapse" role="tabpanel" aria-labelledby="heading_<%=i%>">
+      			<div class="card-block">
+      				<pre> <%= JSON.pretty_generate(JSON.parse(line)['data']['series']) %> </pre>
+			</div>
+    		</div>
+  	</div>
+      </div>
+        <% i= i+1%>
+       <%end%>
+</div>
+<script type="text/javascript">
+</script>
