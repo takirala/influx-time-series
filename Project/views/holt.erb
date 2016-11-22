@@ -2,13 +2,14 @@
   <div class="col-md-12">
     <div>
       <div class="btn-group gap" role="group">
-        <button id="mem_free" class="btn btn-default active" onclick="mem_click('mem')">Free Memory</button>
-        <button id="mem_used" class="btn btn-default" onclick="mem_click('dis')">Disk Reads</button>
+        <button id="holt_initial" class="btn btn-default active" onclick="holt_click('mem', 'GB')">Free Memory</button>
+        <button class="btn btn-default" onclick="holt_click('udp_socket', 'UDP')">UDP Ports</button>
+        <button class="btn btn-default" onclick="holt_click('tcp_established', 'TCP')">TCP Ports</button>
       </div>
 
     </div>
     <h2>Predictor</h2>
-    <div id="mem_chart" style="white-space: nowrap;">
+    <div id="holt_chart" style="white-space: nowrap;">
       <%= erb :graph %>
     </div>
   </div>
@@ -22,16 +23,17 @@ $('body').on('click', '.btn-group button', function (e) {
 });
 
 $(document).ready(function() {
-    $("#mem_free").click();
+    $("#holt_initial").click();
 });
 
-function mem_click(parameter) {
+function holt_click(parameter, tagName) {
   var testQuery = '';
   //        <!--Available_Bytes for windows and available for unix-->
   //        <!--Percent_Idle_Time for windows and read_bytes for unix-->
   
-  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 FROM mem where time > now() - 2h group by time(30s)";
-  else if (parameter === 'disk') testQuery = "SELECT holt_winters_with_fit(DIFFERENCE("+'read_bytes'+"),100,10) / 1000 AS KB from diskio where time > now() - 2h GROUP BY \"name\""
+  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 AS "+tagName+" FROM mem where time > now() - 2h group by time(30s)";
+
+  else testQuery = "SELECT holt_winters_with_fit(MEAN("+parameter+"),100,10) AS "+tagName+" from netstat where time > now() - 2h GROUP BY time(30s)"
   
   console.debug(testQuery);
   $(".chart").empty();
@@ -46,8 +48,8 @@ function mem_click(parameter) {
             function(influxData) {
               console.debug(influxData)
                 graphObject = drawGraph(
-                        $('#mem_chart'),
-                        transformData(influxData, "GB"),
+                        $('#holt_chart'),
+                        transformData(influxData, tagName),
                         'stack',
                         testQuery
                 );

@@ -20,7 +20,7 @@ $('body').on('click', '.btn-group button', function (e) {
     $(this).siblings().removeClass('active');
 });
 
-$(document).ready(proc_click('total_threads', 'Threads'));
+$(document).ready(proc_click('running', 'Running'));
 
 function proc_click(parameter, tagName) {
 	var procQuery = "select MEAN("+parameter+") AS "+tagName+" from processes where time > now() - 1h GROUP BY time(30s);";
