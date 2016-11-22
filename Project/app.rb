@@ -21,8 +21,12 @@ get '/proc' do
 	erb :proc
 end
 
+get '/holt' do
+	erb :holt
+end
+
 get '/alerts' do
    @logFile = File.read("/tmp/alerts.log")
-      erb :alerts
+	erb :alerts
    #@logFile.close
 end

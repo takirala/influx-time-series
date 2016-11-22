@@ -2,20 +2,14 @@
   <div class="col-md-12">
     <div>
       <div class="btn-group gap" role="group">
+        <!--Available_Bytes for windows and available for unix-->
         <button id="mem_free" class="btn btn-default active" onclick="mem_click('available')">Available</button>
         <button id="mem_used" class="btn btn-default" onclick="mem_click('used')">Used</button>
       </div>
-
     </div>
     <h2>RAM Usage</h2>
     <div id="mem_chart" style="white-space: nowrap;">
-      <div class="chart_container" >
-          <div class="y_axis"></div>
-          <div class="chart"></div>
-          <h3>Range Slider</h3>
-          <div class="slider"></div>
-      </div>
-      <div class="legend"></div>
+      <%= erb :graph %>
     </div>
   </div>
 </div>
