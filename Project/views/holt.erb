@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12">
+    <div>
+      <div class="btn-group gap" role="group">
+        <button id="mem_free" class="btn btn-default active" onclick="mem_click('mem')">Free Memory</button>
+        <button id="mem_used" class="btn btn-default" onclick="mem_click('dis')">Disk Reads</button>
+      </div>
+
+    </div>
+    <h2>Predictor</h2>
+    <div id="mem_chart" style="white-space: nowrap;">
+      <%= erb :graph %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+$('body').on('click', '.btn-group button', function (e) {
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
+});
+
+$(document).ready(function() {
+    $("#mem_free").click();
+});
+
+function mem_click(parameter) {
+  var testQuery = '';
+  //        <!--Available_Bytes for windows and available for unix-->
+  //        <!--Percent_Idle_Time for windows and read_bytes for unix-->
+  
+  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 FROM win_mem where time > now() - 2h group by time(30s)";
+  else if (parameter === 'disk') testQuery = "SELECT holt_winters_with_fit(DIFFERENCE("+'read_bytes'+"),100,10) / 1000 AS KB from diskio where time > now() - 2h GROUP BY \"name\""
+  
+  console.debug(testQuery);
+  $(".chart").empty();
+  $(".y_axis").empty();
+  $(".legend").empty();
+  $(".slider").empty();
+
+    $.getJSON(_influxdb, {
+                db: 'telegraf',
+                q: testQuery
+            },
+            function(influxData) {
+              console.debug(influxData)
+                graphObject = drawGraph(
+                        $('#mem_chart'),
+                        transformData(influxData, "GB"),
+                        'stack',
+                        testQuery
+                );
+            }
+    );
+};
+</script>
