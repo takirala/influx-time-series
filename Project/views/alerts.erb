@@ -1,14 +1,33 @@
+<meta http-equiv="refresh" content="60" />
+<div class = "row">
+<h2> Set Alerts </h2>
+<form method="POST" action="/setparams"> 
+  <div style="width:30%; float:left">
+  <label> Set </label>
+  <label> <select name="alert">
+   <option value="mem">memory_used</option>
+   <option value="cpu">cpu_idle</option>
+  </select></label>
+  <label>to Percent </label>
+  <label> <input style="width:30px;" type="text" name="perc"></label>
+  </div>
+  <div > <input type="submit" value="set alert!"></div>
+</form>
+
+</div>
+
+
 <div class = "row">
 
  <h2>Alerts Log</h2>
    <% i = 1 %>
-    <% @logFile.each_line do |line| %>
+    <% @logFile.split("\n").reverse_each do |line| %>
       <div id="accordion" role="tablist" aria-multiselectable="true">
 	<div class="card">
     		<div class="card-header" role="tab" id="heading<%=i%>">
       		<h5 class="mb-0">
         	<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%=i%>" aria-expanded="false" aria-controls="collapse_<%=i%>">
-        	 <%= JSON.pretty_generate(JSON.parse(line)['message'])%>
+        	 <%= JSON.pretty_generate(JSON.parse(line)['message']) %> <%= "||" %> <%= JSON.pretty_generate(JSON.parse(line)['data']['series'][0]['values'][0][0]) %>
                 </a>
       		</h5>
     		</div>
