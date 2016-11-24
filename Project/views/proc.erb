@@ -20,7 +20,11 @@ $('body').on('click', '.btn-group button', function (e) {
     $(this).siblings().removeClass('active');
 });
 
-$(document).ready(proc_click('running', 'Running'));
+$(document).ready(function() {
+    $(".navbar-nav li").removeClass('active');
+    $(".proc-tab").addClass('active');
+    proc_click('running', 'Running');
+});
 
 function proc_click(parameter, tagName) {
 	var procQuery = "select MEAN("+parameter+") AS "+tagName+" from processes where time > now() - 1h GROUP BY time(30s);";
@@ -41,7 +45,8 @@ function proc_click(parameter, tagName) {
 	                    transformData(influxData, tagName),
 	                    'stack',
 	                    procQuery,
-	                    procUpdateQuery
+                      procUpdateQuery,
+                      true
 	            );
         }
     );

@@ -19,6 +19,12 @@ $('body').on('click', '.btn-group button', function (e) {
     $(this).siblings().removeClass('active');
 });
 
+$(document).ready(function() {
+    $(".navbar-nav li").removeClass('active');
+    $(".netstat-tab").addClass('active');
+    net_click('tcp_established', 'TCPEst');
+});
+
 $(document).ready(net_click('tcp_established', 'TCPEst'));
 
 function net_click(parameter, tagName) {
@@ -43,7 +49,8 @@ function net_click(parameter, tagName) {
 	                    transformData(influxData, tagName),
 	                    'stack',
 	                    procQuery,
-	                    procUpdateQuery
+                      procUpdateQuery,
+                      true
 	            );
         }
     );

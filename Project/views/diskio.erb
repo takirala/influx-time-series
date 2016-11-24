@@ -1,9 +1,5 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="btn-group gap" role="group">
-      <button id="read_bytes" class="btn btn-default active" onclick="disk_click('read_bytes')">Read Traffic</button>
-      <button id="write_bytes" class="btn btn-default" onclick="disk_click('write_bytes')">Write Traffic</button>
-    </div>
     <h2>Disk IO Usage</h2>
     <div id="diskio_chart" style="white-space: nowrap;">
       <%= erb :graph %>
@@ -19,12 +15,14 @@ $('body').on('click', '.btn-group button', function (e) {
 });
 
 $(document).ready(function() {
-    $("#read_bytes").click();
+    $(".navbar-nav li").removeClass('active');
+    $(".disk-tab").addClass('active');
+    disk_click();
 });
 
-function disk_click(parameter) {
-  var diskQuery = "SELECT DIFFERENCE("+parameter+") / 1000 AS KB from diskio where time > now() - 1h GROUP BY \"name\"";
-  var diskUpdateQuery = "SELECT DIFFERENCE("+parameter+") / 1000 AS KB from diskio where time > now() - 30s GROUP BY \"name\"";
+function disk_click() {
+  var diskQuery = "SELECT DIFFERENCE(used) / 1000000 AS MB from disk where time > now() - 1h AND fstype='hfs' GROUP BY fstype";
+  var diskUpdateQuery = "SELECT DIFFERENCE(used) / 1000000 AS MB from disk where time > now() - 30s AND fstype='hfs' GROUP BY fstype";
 
   console.debug(diskQuery)
 
@@ -43,7 +41,8 @@ function disk_click(parameter) {
                         transformData(influxData),
                         'stack',
                         diskQuery,
-                        diskUpdateQuery
+                        diskUpdateQuery,
+                        true
 
                 );
             }
