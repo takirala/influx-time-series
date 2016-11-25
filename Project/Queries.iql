@@ -1,0 +1,4 @@
+CREATE CONTINUOUS QUERY "holt_pred" ON "telegraf"
+BEGIN
+  SELECT holt_winters_with_fit(MEAN(Available_Bytes),10,0) INTO "win_mem_holt" FROM "win_mem" group by time(30s)
+END
