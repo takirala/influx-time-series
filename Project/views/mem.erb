@@ -21,7 +21,14 @@ $('body').on('click', '.btn-group button', function (e) {
     $(this).siblings().removeClass('active');
 });
 
+$('body').on('click', '.navbar-nav li', function (e) {
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
+});
+
 $(document).ready(function() {
+    $(".navbar-nav li").removeClass('active');
+    $(".mem-tab").addClass('active');
     $("#mem_free").click();
 });
 
@@ -45,7 +52,8 @@ function mem_click(parameter) {
                         transformData(influxData, "GB"),
                         'stack',
                         testQuery,
-                        updateQuery
+                        updateQuery,
+                        true
                 );
             }
     );

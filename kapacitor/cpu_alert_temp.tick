@@ -1,11 +1,15 @@
+var period = 10s
+var every = 10s
 stream
     // Select just the cpu measurement from our example database.
     |from()
-        .measurement('mem')
+        .measurement('cpu')
+    |window()
+       .period(period)
+       .every(every)
     |alert()
-        .message('RAMMM usage alert')
-        .crit(lambda: "used_percent" >  variable)
+        .message('CPUUUU usage alert')
+        .crit(lambda: "usage_idle" <  variable)
         // Whenever we get an alert write it to a file.
         .log('/tmp/alerts.log')
-        .post('localhost:4567/sendalerts')
         //.email('rdammala@ufl.edu')

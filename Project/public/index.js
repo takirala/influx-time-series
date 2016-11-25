@@ -9,39 +9,6 @@ function convertToEST(clientDate){
     return serverDate
 }
 
-function transformProcData(influxData) {
-    var palette = new Rickshaw.Color.Palette();
-    //console.debug(influxData.results[0])
-    console.debug(influxData)
-    var transform = influxData.results[0].series.map(function(s) {  
-        
-        var columns = s.columns;
-        var values = s.values;
-        
-        var res = [];
-
-        for (var i= 0; i < values.length; i++) {
-            var item = values[i];
-
-            for(var j = 1; j < columns.length; j++) {
-                //console.debug( " x : " +  item[0] + " y : " + item[j]);
-                var elem = {
-                    name: columns[j],
-                    data: {
-                        x : convertToEST(new Date(item[0])).getTime() / 1000, 
-                        y : item[j]
-                    }
-                    //color: palette.color()
-                }
-                res.push(elem);
-            }
-        }
-        return res;
-    });
-    console.debug(transform);
-    return transform;
-}
-
 function transformData(influxData, tagName) {
     var palette = new Rickshaw.Color.Palette();
     console.debug(influxData)
@@ -63,7 +30,7 @@ var prevData = null;
 var graphObject = null;
 var prevIntervalId = null;
 
-function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
+function drawGraph($element, seriesData, renderer, testQuery, updateQuery, showSlider) {
     //$element.find('.y_axis').css('background-color: red;')
 
     var graph = new Rickshaw.Graph({
@@ -74,10 +41,12 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
         series: seriesData
     });
 
+    if(showSlider === true) {
     var slider = new Rickshaw.Graph.RangeSlider.Preview( {
         graph: graph,
         element: $element.find('.slider').get(0)
-    } );
+    });
+    }
 
     graph.render();
 
@@ -96,7 +65,7 @@ function drawGraph($element, seriesData, renderer, testQuery, updateQuery) {
 
     // x axis
     var time = new Rickshaw.Fixtures.Time();
-    var interval = time.unit('30 minutes');
+    var interval = time.unit('hour');
     var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: graph,
         timeUnit: interval
