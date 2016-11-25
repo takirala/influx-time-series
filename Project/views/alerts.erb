@@ -27,8 +27,8 @@
     		<div class="card-header" role="tab" id="heading<%=i%>">
       		<h5 class="mb-0">
         	<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%=i%>" aria-expanded="false" aria-controls="collapse_<%=i%>">
-        	 <%= JSON.pretty_generate(JSON.parse(line)['message']) %> <%= "||" %> <%= JSON.pretty_generate(JSON.parse(line)['data']['series'][0]['values'][0][0]) %>
-                </a>
+        	 <%= JSON.parse(line)['message'] %> <%= "||" %> <%= JSON.parse(line)['data']['series'][0]['values'][0][0] %>
+          </a>
       		</h5>
     		</div>
     		<div id="collapse_<%=i%>" class="collapse" role="tabpanel" aria-labelledby="heading_<%=i%>">

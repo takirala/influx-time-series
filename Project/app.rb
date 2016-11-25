@@ -2,6 +2,8 @@
 require 'sinatra'
 require 'json'
 require 'twilio-ruby'
+require 'pry'
+
 get '/' do
 	erb :index
 end
@@ -50,15 +52,15 @@ post '/setparams' do
     cmd = "/tmp/cpumem.sh" +" "+@perc
     system(cmd)     
    end
-   @account_sid = ''
-   @auth_token = ''
+   @account_sid = 'AC5001ed2e2cc293b9a74ade0a92851c57'
+   @auth_token = 'a1c525ce010ddde299bafb268ba01d8f'
 
    # set up a client to talk to the Twilio REST API 
    @client = Twilio::REST::Client.new @account_sid, @auth_token
 
    @client.account.messages.create({
-    :messaging_service_sid => '',
-    :to => '+188888888',
+    :messaging_service_sid => 'MG9159a3b4217071edfc2ff0974a9117fc',
+    :to => '+13528701915',
     :body => 'Alert thresshold changed' +" "+@alert+" "+@perc 
    })
    redirect '/alerts'
@@ -70,15 +72,15 @@ post '/sendalerts' do
      request.body.rewind
      @requeste = JSON.parse request.body.read
    end
-   @account_sid = '' 
-   @auth_token = '' 
+   @account_sid = 'AC5001ed2e2cc293b9a74ade0a92851c57' 
+   @auth_token = 'a1c525ce010ddde299bafb268ba01d8f' 
  
    # set up a client to talk to the Twilio REST API 
    @client = Twilio::REST::Client.new @account_sid, @auth_token 
  
    @client.account.messages.create({
-    :messaging_service_sid => '', 
-    :to => '+18888888', 
-    :body => 'Test Message'
+    :messaging_service_sid => 'MG9159a3b4217071edfc2ff0974a9117fc', 
+    :to => '+13528701915', 
+    :body => 'Setting Threshold'
    })
 end
