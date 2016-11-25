@@ -77,7 +77,7 @@
 
 #### Set kapacitor alerts
 
-    Copy all files in influx-time-series/kapacitor to /tmp dir
+    Copy all .tick and .sh files in influx-time-series/kapacitor to /tmp dir
 
     kapacitor define mem_alert -type stream -tick /tmp/mem_alert.tick -dbrp telegraf.autogen
     kapacitor enable mem_alert
