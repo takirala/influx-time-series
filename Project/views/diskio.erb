@@ -21,7 +21,7 @@ $(document).ready(function() {
 });
 
 function disk_click() {
-  var diskQuery = "SELECT DIFFERENCE(MEAN(used)) / 1000000 AS MB from disk where time > now() - 1h AND fstype='hfs' GROUP BY time(30s)";
+  var diskQuery = "SELECT DIFFERENCE(MEAN(used)) / 1000000 AS MB from disk where time > now() - "+timeRange+" AND fstype='hfs' GROUP BY time(30s)";
   var diskUpdateQuery = "SELECT DIFFERENCE(MEAN(used)) / 1000000 AS MB from disk where time > now() - 30s AND fstype='hfs' GROUP BY time(30s)";
 
   console.debug(diskQuery)

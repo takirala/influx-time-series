@@ -107,8 +107,67 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-  <div class="container">
-    <%= yield %>
-  </div>
+<div class="container">
+<div class="dropdown" id="timeRangeDiv">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Time Range
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#" onclick="addTimeRange('1h')">Past 1h</a></li>
+    <li><a href="#" onclick="addTimeRange('2h')">Past 2h</a></li>
+    <li><a href="#" onclick="addTimeRange('6h')">Past 6h</a></li>
+    <li><a href="#" onclick="addTimeRange('12h')">Past 12h</a></li>
+    <li><a href="#" onclick="addTimeRange('24h')">Past 24h</a></li>
+    <li><a href="#" onclick="addTimeRange('48h')">Past 48h</a></li>
+  </ul>
+</div>
+<%= yield %>
+</div>
+
+<script type="text/javascript">
+var timeRange = "<%= params['timeRange']%>";
+if((timeRange == null) || (timeRange.length == 0)) {
+    timeRange = '1h';
+}
+
+function addTimeRange(timeRange) {
+    location.href = appendToQueryString('timeRange', timeRange)
+}
+
+function appendToQueryString(param, val) {
+    var queryString = window.location.search.replace("?", "");
+    var parameterListRaw = queryString == "" ? [] : queryString.split("&");
+    var parameterList = {};
+    for (var i = 0; i < parameterListRaw.length; i++) {
+        var parameter = parameterListRaw[i].split("=");
+        parameterList[parameter[0]] = parameter[1];
+    }
+    parameterList[param] = val;
+
+    var newQueryString = "?";
+    for (var item in parameterList) {
+        if (parameterList.hasOwnProperty(item)) {
+            newQueryString += item + "=" + parameterList[item] + "&";
+        }
+    }
+    newQueryString = newQueryString.replace(/&$/, "");
+    return location.origin + location.pathname + newQueryString;
+}
+
+function hideTimeRange() {
+    var holtIndex = window.location.href.search('/holt');
+    var alertsIndex = window.location.href.search('/alerts');
+
+    return (holtIndex > 0) || (alertsIndex > 0);
+}
+
+if(hideTimeRange()) {
+    $('#timeRangeDiv').hide();
+} else {
+    $('#timeRangeDiv').show();
+}
+
+</script>
 </body>
 </html>
