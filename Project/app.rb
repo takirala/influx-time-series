@@ -60,7 +60,7 @@ post '/setparams' do
 
    @client.account.messages.create({
     :messaging_service_sid => 'MG9159a3b4217071edfc2ff0974a9117fc',
-    :to => '+13528701915',
+    :to => '+13528701980',
     :body => 'Alert thresshold changed' +" "+@alert+" "+@perc 
    })
    redirect '/alerts'
@@ -80,7 +80,7 @@ post '/sendalerts' do
  
    @client.account.messages.create({
     :messaging_service_sid => 'MG9159a3b4217071edfc2ff0974a9117fc', 
-    :to => '+13528701915', 
+    :to => '+13528701980', 
     :body => 'Setting Threshold'
    })
 end

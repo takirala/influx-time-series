@@ -33,8 +33,8 @@ $(document).ready(function() {
 });
 
 function mem_click(parameter) {
-  var testQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - "+timeRange+" GROUP BY time(30s);";
-  var updateQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - 30s GROUP BY time(30s)";
+  var testQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - "+timeRange+" GROUP BY time("+groupTime+");";
+  var updateQuery = "SELECT mean("+parameter+") / 1000000000 from "+win_prefix+"mem where time > now() - "+groupTime+" GROUP BY time("+groupTime+")";
   console.debug(testQuery);
   $(".chart").empty();
   $(".y_axis").empty();

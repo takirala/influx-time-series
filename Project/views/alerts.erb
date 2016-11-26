@@ -21,12 +21,13 @@
 
  <h2>Alerts Log</h2>
    <% i = 1 %>
-    <% @logFile.split("\n").reverse_each do |line| %>
+   <% @logFile.split("\n").reverse_each do |line| %>
+     <% begin %>
       <div id="accordion" role="tablist" aria-multiselectable="true">
 	<div class="card">
     		<div class="card-header" role="tab" id="heading<%=i%>">
       		<h5 class="mb-0">
-        	<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%=i%>" aria-expanded="false" aria-controls="collapse_<%=i%>">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%=i%>" aria-expanded="false" aria-controls="collapse_<%=i%>">
         	 <%= JSON.parse(line)['message'] %> <%= "||" %> <%= JSON.parse(line)['data']['series'][0]['values'][0][0] %>
           </a>
       		</h5>
@@ -38,7 +39,11 @@
     		</div>
   	</div>
       </div>
-        <% i= i+1%>
+      <% i= i+1%>
+    <% rescue%>
+      <%= puts "COULD NOT PARSE JSON!!" %>
+
+    <% end %>
        <%end%>
 
 </div>

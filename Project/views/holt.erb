@@ -33,9 +33,9 @@ function holt_click(parameter, tagName) {
   //        <!--Available_Bytes for windows and available for unix-->
   //        <!--Percent_Idle_Time for windows and read_bytes for unix-->
   
-  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 AS "+tagName+" FROM mem where time > now() - 2h group by time(30s)";
+  if(parameter === 'mem') testQuery = "SELECT holt_winters_with_fit(MEAN("+'available'+"),1000,10)/1000000000 AS "+tagName+" FROM mem where time > now() - 8h group by time(20s)";
 
-  else testQuery = "SELECT holt_winters_with_fit(MEAN("+parameter+"),100,10) AS "+tagName+" from netstat where time > now() - 2h GROUP BY time(30s)"
+  else testQuery = "SELECT holt_winters_with_fit(MEAN("+parameter+"),100,10) AS "+tagName+" from netstat where time > now() - 8h GROUP BY time(20s)"
   
   console.debug(testQuery);
   $(".chart").empty();
@@ -48,12 +48,15 @@ function holt_click(parameter, tagName) {
                 q: testQuery
             },
             function(influxData) {
-              console.debug(influxData)
+              console.log('Inside callback!')
+              //console.debug(influxData)
                 graphObject = drawGraph(
                         $('#holt_chart'),
                         transformData(influxData, tagName),
                         'stack',
-                        testQuery
+                        testQuery,
+                        null,
+                        true
                 );
             }
     );

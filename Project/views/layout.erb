@@ -28,7 +28,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.css" media="screen" rel="stylesheet" type="text/css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
-    <meta http-equiv="refresh" content="120"> <!--Refresh page every 120 seconds-->
+    <!--<meta http-equiv="refresh" content="120">--> <!--Refresh page every 120 seconds-->
 
     <script type="text/javascript">
         //Set this parameter to empty string when running in windows or
@@ -126,6 +126,8 @@
 </div>
 
 <script type="text/javascript">
+var groupTime = '20s';
+
 var timeRange = "<%= params['timeRange']%>";
 if((timeRange == null) || (timeRange.length == 0)) {
     timeRange = '1h';
