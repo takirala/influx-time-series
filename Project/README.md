@@ -38,6 +38,11 @@
         swap
         system
 
+
+#### Generate telegraf config file
+
+    telegraf.conf file is already present in the `telegraf` dir of the repo
+
 #### Run telegraf
 
     telegraf -config telegraf.conf
@@ -47,7 +52,7 @@
     \curl -sSL https://get.rvm.io | bash
     rvm install 2.2.1
 
-#### Install sinatra gem inside the project's rvm gemset
+#### Install gems inside the project's rvm gemset
 
     cd influx-time-series/Project
     gem install sinatra

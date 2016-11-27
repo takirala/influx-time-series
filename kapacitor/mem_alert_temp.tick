@@ -3,7 +3,7 @@ stream
     |from()
         .measurement('mem')
     |alert()
-        .message('RAMMM usage alert')
+        .message('RAM usage alert')
         .crit(lambda: "used_percent" >  variable)
         // Whenever we get an alert write it to a file.
         .log('/tmp/alerts.log')

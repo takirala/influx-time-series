@@ -8,7 +8,7 @@ stream
        .period(period)
        .every(every)
     |alert()
-        .message('CPUUUU usage alert')
+        .message('CPU usage alert')
         .crit(lambda: "usage_idle" <  variable)
         // Whenever we get an alert write it to a file.
         .log('/tmp/alerts.log')

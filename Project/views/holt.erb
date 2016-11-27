@@ -10,6 +10,7 @@
     </div>
     <h2>Predictor</h2>
     <div id="holt_chart" style="white-space: nowrap;">
+      <div id="prediction-loader"></div>
       <%= erb :graph %>
     </div>
   </div>
@@ -43,11 +44,15 @@ function holt_click(parameter, tagName) {
   $(".legend").empty();
   $(".slider").empty();
 
+  $("#prediction-loader").html("<img height='450px' src='/prediction-loader.png' />");
+
     $.getJSON(_influxdb, {
                 db: 'telegraf',
                 q: testQuery
             },
             function(influxData) {
+              $('#prediction-loader').html('');
+
               console.log('Inside callback!')
               //console.debug(influxData)
                 graphObject = drawGraph(
