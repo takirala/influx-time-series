@@ -93,3 +93,8 @@
     Goto http://localhost:4567/alerts and set alert thresholds for mem and cpu
 
     Alerts will start appearing on the /alerts page!
+
+#### Disable kapacitor alerts
+
+    kapacitor disable mem_alert
+    kapacitor disable cpu_alert

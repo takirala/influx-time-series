@@ -1,11 +1,11 @@
 <html>
 <head>
     <title>Sys Watch - CIS 6930</title>
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="/jquery-ui.min.js"></script>
+    <script src="/d3.v3.min.js" type="text/javascript"></script>
+    <script src="/rickshaw.min.js" type="text/javascript"></script>
+    <script src="/bootstrap.min.js" type="text/javascript"></script>
     <script src="/index.js" type="text/javascript"></script>
     
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -26,8 +26,8 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="/rickshaw.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
     <!--<meta http-equiv="refresh" content="120">--> <!--Refresh page every 120 seconds-->
 
     <script type="text/javascript">
@@ -100,7 +100,7 @@
         <li class="disk-tab"><a href="/disk">Disk</a></li>
         <li class="proc-tab"><a href="/proc">Process</a></li>
         <!--<li><a href="/net">Network</a></li>-->
-        <li class="netstat-tab"><a href="/netstat">Ports</a></li>
+        <li class="netstat-tab"><a href="/netstat">NetStat</a></li>
         <li class="holt-tab"><a href="/holt">Predictor</a></li>
         <li class="alerts-tab"><a href="/alerts">Alerts</a></li>
       </ul>
@@ -126,7 +126,7 @@
 </div>
 
 <script type="text/javascript">
-var groupTime = '20s';
+var groupTime = '10s';
 
 var timeRange = "<%= params['timeRange']%>";
 if((timeRange == null) || (timeRange.length == 0)) {
