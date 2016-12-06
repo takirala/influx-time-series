@@ -1,6 +1,10 @@
 # influx-time-series
 A hands on tutorial to get started with influx DB
 
+## Architecture of SysWatch
+
+![Architecture](/Architecture.png)
+
 
 ### Steps to do.
 
